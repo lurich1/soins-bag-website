@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoSack Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #6e00ff;
+            --secondary-color: #00ffff;
+            --bg-color: #0a0a0a;
+            --text-color: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(110, 0, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(110, 0, 255, 0.9);
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+        }
+
+        main {
+            padding-top: 100px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .shop-container {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .filters {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-color);
+            border-radius: 5px;
+        }
+
+        .products {
+            flex: 3;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .product-card p {
+            margin-bottom: 0.5rem;
+        }
+
+        .product-card button {
+            margin-top: auto;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            color: var(--text-color);
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .product-card button:hover {
+            opacity: 0.8;
+        }
+
+        .custom-order {
+            margin-top: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 10px;
+        }
+
+        .custom-order h2 {
+            margin-bottom: 1rem;
+        }
+
+        .custom-order form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .custom-order label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .custom-order input,
+        .custom-order textarea {
+            width: 100%;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-color);
+            border-radius: 5px;
+        }
+
+        .custom-order button {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            color: var(--text-color);
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .custom-order button:hover {
+            opacity: 0.8;
+        }
+
+        .cart {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            max-width: 300px;
+        }
+
+        .cart h2 {
+            margin-bottom: 1rem;
+        }
+
+        .cart-items {
+            margin-bottom: 1rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-total {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .cart button {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            color: var(--text-color);
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .cart button:hover {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .shop-container {
+                flex-direction: column;
+            }
+
+            .cart {
+                position: static;
+                max-width: 100%;
+                margin-top: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">NeoSack</div>
+            <button class="hamburger" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1>NeoSack Shop</h1>
+        <div class="shop-container">
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="size">Size:</label>
+                    <select id="size">
+                        <option value="">All</option>
+                        <option value="small">Small</option>
+                        <option value="medium">Medium</option>
+                        <option value="large">Large</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="color">Color:</label>
+                    <select id="color">
+                        <option value="">All</option>
+                        <option value="black">Black</option>
+                        <option value="blue">Blue</option>
+                        <option value="red">Red</option>
+                        <option value="green">Green</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="type">Type:</label>
+                    <select id="type">
+                        <option value="">All</option>
+                        <option value="custom">Custom</option>
+                        <option value="school">School</option>
+                        <option value="promotional">Promotional</option>
+                    </select>
+                </div>
+            </div>
+            <div class="products" id="products">
+                <!-- Products will be dynamically added here -->
+            </div>
+        </div>
+
+        <div class="custom-order">
+            <h2>Custom Order Request</h2>
+            <form id="custom-order-form">
+                <div>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div>
+                    <label for="description">Description of your custom bag:</label>
+                    <textarea id="description" rows="4" required></textarea>
+                </div>
+                <button type="submit">Submit Custom Order</button>
+            </form>
+        </div>
+
+        <div class="cart">
+            <h2>Your Cart</h2>
+            <div id="cart-items" class="cart-items">
+                <!-- Cart items will be dynamically added here -->
+            </div>
+            <div id="cart-total" class="cart-total">Total: $0.00</div>
+            <button id="checkout">Proceed to Checkout</button>
+        </div>
+    </main>
+
+    <script>
+        const products = [
+            { id: 1, name: 'Custom Backpack', price: 89.99, type: 'custom', size: 'medium', color: 'black' },
+            { id: 2, name: 'School Messenger Bag', price: 59.99, type: 'school', size: 'large', color: 'blue' },
+            { id: 3, name: 'Promotional Tote', price: 29.99, type: 'promotional', size: 'small', color: 'white' },
+            { id: 4, name: 'Custom Laptop Sleeve', price: 39.99, type: 'custom', size: 'medium', color: 'gray' },
+            { id: 5, name: 'School Backpack', price: 69.99, type: 'school', size: 'large', color: 'red' },
+            { id: 6, name: 'Promotional Drawstring Bag', price: 19.99, type: 'promotional', size: 'small', color: 'green' },
+        ];
+
+        let cart = [];
+
+        function renderProducts() {
+            const productsContainer = document.getElementById('products');
+            productsContainer.innerHTML = '';
+
+            const sizeFilter = document.getElementById('size').value;
+            const colorFilter = document.getElementById('color').value;
+            const typeFilter = document.getElementById('type').value;
+
+            const filteredProducts = products.filter(product => 
+                (!sizeFilter || product.size === sizeFilter) &&
+                (!colorFilter || product.color === colorFilter) &&
+                (!typeFilter || product.type === typeFilter)
+            );
+
+            filteredProducts.forEach(product => {
+                const productElement = document.createElement('div');
+                productElement.className = 'product-card';
+                productElement.innerHTML = `
+                    <h3>${product.name}</h3>
+                    <p>Price: $${product.price.toFixed(2)}</p>
+                    <p>Size: ${product.size}</p>
+                    <p>Color: ${product.color}</p>
+                    <p>Type: ${product.type}</p>
+                    <button onclick="addToCart(${product.id})">Add to Cart</button>
+                `;
+                productsContainer.appendChild(productElement);
+            });
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                cart.push(product);
+                updateCart();
+            }
+        }
+
+        function updateCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalElement = document.getElementById('cart-total');
+            cartItemsContainer.innerHTML = '';
+
+            let total = 0;
+            cart.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'cart-item';
+                itemElement.innerHTML = `
+                    <span>${item.name}</span>
+                    <span>$${item.price.toFixed(2)}</span>
+                `;
+                cartItemsContainer.appendChild(itemElement);
+                total += item.price;
+            });
+
+            cartTotalElement.textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+        document.getElementById('size').addEventListener('change', renderProducts);
+        document.getElementById('color').addEventListener('change', renderProducts);
+        document.getElementById('type').addEventListener('change', renderProducts);
+
+        document.getElementById('custom-order-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            constHere's the continuation of the text stream from the cut-off point:
+
+preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const description = document.getElementById('description').value;
+            console.log('Custom order submitted:', { name, email, description });
+            // Here you would typically send this data to your backend
+            alert('Custom order submitted successfully!');
+            this.reset();
+        });
+
+        document.getElementById('checkout').addEventListener('click', function() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+            } else {
+                console.log('Proceeding to checkout with items:', cart);
+                // Here you would typically redirect to a checkout page or open a checkout modal
+                alert('Proceeding to checkout. This feature is not fully implemented in this demo.');
+            }
+        });
+
+        // Hamburger menu functionality
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when a link is clicked
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Initial render
+        renderProducts();
+    </script>
+</body>
+</html>
